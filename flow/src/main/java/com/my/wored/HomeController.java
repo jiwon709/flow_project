@@ -12,4 +12,9 @@ public class HomeController {
 		return "main";
 	}
 	
+	@RequestMapping(value = "/main2", method = RequestMethod.GET)
+	public String home2() {
+		return "main2";
+	}
+	
 }

@@ -16,32 +16,30 @@
 		
 		var chk_arr = [];
 		
-		
-		$(".checkbox_fix").change(function(){
-				//체크박스 선택 시, 배열에 추가한다.
-				if($(".checkbox_fix").is(":checked")){
-					chk_arr.push($(this).val());
-					console.log("push : " + chk_arr);
-					
-					console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
-					console.log("배열 수 : " + chk_arr.length);
-				}
+			
+			//체크박스 선택 시, 배열에 추가한다.
+			if($(".checkbox_fix").is(":checked")){
+				chk_arr.push($(this).val());
+				console.log("push : " + chk_arr);
 				
-				//혹시라도 배열의 길이가 체크한 값보다 더 많아지면 강제 pop
-				if($('input:checkbox[name="checkbox_fix"]:checked').length < chk_arr.length) {
-					chk_arr.pop($(this).val());
-					console.log("pop : " + chk_arr);
-				}
-				
-				//체크한 값을 하나씩 확인하기 위해 초기화
-				else{
-					change();
-					chk_arr = [];
-				}
-			});
+				console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
+				console.log("배열 수 : " + chk_arr.length);
+			}
+			
+			//혹시라도 배열의 길이가 체크한 값보다 더 많아지면 강제 pop
+			if($('input:checkbox[name="checkbox_fix"]:checked').length < chk_arr.length) {
+				chk_arr.pop($(this).val());
+				console.log("pop : " + chk_arr);
+			}
+			
+			//체크한 값을 하나씩 확인하기 위해 초기화
+			else{
+				chk_arr = [];
+			}
 		
 		
-		function change() {
+		
+		function changeList() {
 			$.ajax({
 				url : "<c:url value='/list/checkboxList'/>"
 				,type : "post"
@@ -56,9 +54,9 @@
 					alert(error);
 				}
 			});
-		}
+		} 
 		
-		
+
 
 	});
 	

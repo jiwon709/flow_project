@@ -3,16 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<!-- <typeAliases>
-		<typeAlias type="com.my.petCare.VO.MemberVO" alias="member"/>
-		<typeAlias type="com.my.petCare.VO.ReviewVO" alias="review"/>
-
+	<typeAliases>
+		<typeAlias type="com.my.wored.VO.listVO" alias="listvo"/>
 	</typeAliases>
 	
 	<mappers>
-		<mapper resource="mapper/memberMapper.xml"/>
-		<mapper resource="mapper/reviewMapper.xml"/>
-
-	</mappers> -->
+		<mapper resource="mapper/listMapper.xml"/>
+	</mappers>
 	
 </configuration>
