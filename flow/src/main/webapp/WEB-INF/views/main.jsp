@@ -12,56 +12,100 @@
 <script src="<c:url value="/resources/jquery-3.5.1.min.js"/>"></script>
 <script>
 
-	$(function(){
-		
-		var chk_arr = [];
-		
-		
-		$(".checkbox_fix").change(function(){
-				//체크박스 선택 시, 배열에 추가한다.
-				if($(".checkbox_fix").is(":checked")){
-					chk_arr.push($(this).val());
-					console.log("push : " + chk_arr);
-					
-					console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
-					console.log("배열 수 : " + chk_arr.length);
-				}
-				
-				//혹시라도 배열의 길이가 체크한 값보다 더 많아지면 강제 pop
-				if($('input:checkbox[name="checkbox_fix"]:checked').length < chk_arr.length) {
-					chk_arr.pop($(this).val());
-					console.log("pop : " + chk_arr);
-				}
-				
-				//체크한 값을 하나씩 확인하기 위해 초기화
-				else{
-					change();
-					chk_arr = [];
-				}
-			});
-		
-		
-		function change() {
-			$.ajax({
-				url : "<c:url value='/list/checkboxList'/>"
-				,type : "post"
-				,data : { 
-					"chbox" : chk_arr 
-				}
-				,dataType : "JSON"
-				,success : function(data) {
-					alert(data);
-				}
-				,error : function(request, status, error) {
-					alert(error);
-				}
-			});
-		}
-		
-		
-
-	});
+$(function(){
 	
+	var chk_arr = [];
+	
+	$(".checkbox_fix").change(function(){
+			//체크박스 선택 시, 배열에 추가한다.
+			if($(".checkbox_fix").is(":checked")){
+				chk_arr.push($(this).val());
+				console.log("push : " + chk_arr);
+				
+				console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
+				console.log("배열 수 : " + chk_arr.length);
+			}
+			
+			//혹시라도 배열의 길이가 체크한 값보다 더 많아지면 강제 pop
+			if($('input:checkbox[name="checkbox_fix"]:checked').length < chk_arr.length) {
+				chk_arr.pop($(this).val());
+				console.log("pop : " + chk_arr);
+			}
+			
+			//체크한 값을 하나씩 확인하기 위해 초기화
+			else{
+				change();
+				chk_arr = [];
+			}
+		});
+	
+	
+	function change() {
+		$.ajax({
+			url : "<c:url value='/list/checkboxList'/>"
+			,type : "post"
+			,dataType : "text"
+			//,traditional : true
+			,data : { 
+				chbox : chk_arr
+			}
+			,success : function(data) {
+				console.log(data);
+			}
+			,error : function(request, status, error) {
+				console.log(error);
+			}
+		});
+	}	
+
+});
+
+
+
+$(function(){
+	
+	/* var display = document.getElementById("custom_box");
+	var display_num = document.getElementById("put_num");
+	var input_custom = document.getElementById("custom_text"); */
+	var cnt = 0;
+	
+	$("#custom_add").on("click", add);
+	
+	function add(){
+		/* display.innerHTML += "<button type='button' name='custom_name'>"
+							+ $("#custom_text").val()
+							+ " x"
+							+ "</button>";
+		display_num.innerHTML =  
+		input_custom.innerHTML = ""; */
+		
+		
+		$.ajax({
+			url : "<c:url value='/list/customList'/>"
+			,type : "post"
+			,dataType : "text"
+			,data : {
+				customName : $("#custom_text").val()
+			}
+			,success : function(result) {
+				console.log(result);
+				
+				/* $("#custom_box").html(""); */
+				
+				var tag = "<button type='button' name='custom_name'>";
+				tag += $("#custom_text").val()
+				tag += " x"
+				tag += "</button>";
+				
+				$("#custom_box").append(tag);
+			}
+			,error : function(request, status, error) {
+				console.log(error);
+			}
+		});
+	}
+	
+});
 
 </script>
 
@@ -95,15 +139,14 @@
                    커스텀 확장자
                </td>
                <td>
-                   <input type="text">
-                   <button type="button">+추가</button>
+                   <input type="text" id="custom_text">
+                   <button type="button" id="custom_add">+추가</button>
                </td>
            </tr>
            <tr>
                <td></td>
                <td colspan="2">
-                   <!-- <textarea style="resize:none; width:200px; height:100px;"></textarea> -->
-                   <div style="border:1px solid; width:200px; height:100px;">
+                   <div style="border:1px solid; width:200px; height:100px;" id="custom_box">
                    		<p id="put_num">0/200</p>
                    </div>
                </td>
@@ -111,8 +154,8 @@
        </table>
    </div>
    
-   <script src="<c:url value="/resources/jquery-3.5.1.min.js"/>"></script>
-   <script src="<c:url value="/resources/js/app.js"/>"></script>
+   <%-- <script src="<c:url value="/resources/jquery-3.5.1.min.js"/>"></script>
+   <script src="<c:url value="/resources/js/app.js"/>"></script> --%>
    
 </body>
 </html>

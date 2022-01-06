@@ -12,14 +12,34 @@ public class listDAO {
 	@Autowired
 	private SqlSession sqlsession;
 
-	public void changeList(listVO vo) {
+	public void insertList(listVO vo) {
 		try {
 			listMapper mapper = sqlsession.getMapper(listMapper.class);
-			mapper.change(vo);
+			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
+			mapper.insert(vo);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	public void deleteList(listVO vo) {
+		try {
+			listMapper mapper = sqlsession.getMapper(listMapper.class);
+			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
+			mapper.delete(vo);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+	}
+
+	public void insertCustom(listVO vo) {
+		try {
+			listMapper mapper = sqlsession.getMapper(listMapper.class);
+			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
+			mapper.insertCustom(vo);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

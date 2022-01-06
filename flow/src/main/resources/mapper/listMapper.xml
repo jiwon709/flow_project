@@ -4,13 +4,19 @@
 <mapper namespace="com.my.wored.DAO.listMapper">
 
 	<!-- chageList -->
-	<insert id="change" parameterType="listvo">
-		insert into 
-			flow_test (fix_name)
-			values(
-				#{fix_name}
-			)
+	<insert id="insert" parameterType="listvo">
+		insert into flow_test (fix_name)
+			values( #{fix_name} )
 	</insert>
 	
+	<delete id="delete" parameterType="listvo">
+		delete from flow_test
+			where fix_name = #{fix_name}
+	</delete>
+	
+	<insert id="insertCustom" parameterType="listvo">
+		insert into flow_test (put_name)
+			values( #{put_name} )
+	</insert>
 	
 </mapper>
