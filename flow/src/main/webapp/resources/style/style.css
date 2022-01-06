@@ -1,3 +1,14 @@
 #put_num {
 	font-size : 3px;
 }
+
+#custom_box {
+	display : inline-height;
+	border : 1px solid black;
+	background-color : white;
+	font-size : 4px;
+}
+
+#removeBtn {
+	background-color : white;
+}

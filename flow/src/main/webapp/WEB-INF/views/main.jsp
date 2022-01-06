@@ -45,7 +45,6 @@ $(function(){
 			url : "<c:url value='/list/checkboxList'/>"
 			,type : "post"
 			,dataType : "text"
-			//,traditional : true
 			,data : { 
 				chbox : chk_arr
 			}
@@ -61,25 +60,28 @@ $(function(){
 });
 
 
-
 $(function(){
-	
-	/* var display = document.getElementById("custom_box");
-	var display_num = document.getElementById("put_num");
-	var input_custom = document.getElementById("custom_text"); */
 	var cnt = 0;
 	
-	$("#custom_add").on("click", add);
+	$("#custom_add").on("click", function(){
+		var customNameDoc = document.getElementById("custom_text");
+		
+		if(customNameDoc.value.trim().length==0 || customNameDoc.value.trim()==""){
+			alert("확장자를 입력해 주세요.");
+			return false;
+		}
+		if(customNameDoc.value.length >= 20){
+			alert("20자 내외로 입력해 주세요.");
+			return false;
+		}
+		else{
+			add();
+		}
+	});
 	
-	function add(){
-		/* display.innerHTML += "<button type='button' name='custom_name'>"
-							+ $("#custom_text").val()
-							+ " x"
-							+ "</button>";
-		display_num.innerHTML =  
-		input_custom.innerHTML = ""; */
-		
-		
+	$("#custom_text").html("");
+	
+	function add(){	
 		$.ajax({
 			url : "<c:url value='/list/customList'/>"
 			,type : "post"
@@ -90,13 +92,11 @@ $(function(){
 			,success : function(result) {
 				console.log(result);
 				
-				/* $("#custom_box").html(""); */
-				
 				var tag = "<button type='button' name='custom_name'>";
 				tag += $("#custom_text").val()
 				tag += " x"
 				tag += "</button>";
-				
+				 
 				$("#custom_box").append(tag);
 			}
 			,error : function(request, status, error) {
@@ -104,8 +104,8 @@ $(function(){
 			}
 		});
 	}
-	
 });
+
 
 </script>
 
@@ -140,7 +140,7 @@ $(function(){
                </td>
                <td>
                    <input type="text" id="custom_text">
-                   <button type="button" id="custom_add">+추가</button>
+                   <input type="button" id="custom_add" value="+추가">
                </td>
            </tr>
            <tr>
