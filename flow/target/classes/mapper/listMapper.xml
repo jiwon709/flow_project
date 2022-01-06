@@ -19,4 +19,9 @@
 			values( #{put_name} )
 	</insert>
 	
+	<delete id="deleteCustom" parameterType="listvo">
+		delete from flow_test
+			where put_name = #{put_name}
+	</delete>
+	
 </mapper>

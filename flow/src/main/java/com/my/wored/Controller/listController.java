@@ -1,5 +1,6 @@
 package com.my.wored.Controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,6 +71,28 @@ public class listController {
 		System.out.println("controller customName : " + vo.getPut_name());
 		
 		dao.insertCustom(vo);
+		
+		
+		return customName;
+	}
+	
+	@RequestMapping(value = "/list/customDelete", method = RequestMethod.POST)
+	@ResponseBody
+	public String customDelete( 
+			@RequestParam(value = "customName", required = false) String customName, listVO vo) {
+		
+		//아무것도 입력되지 않았을 때 main화면으로 돌아간다.
+		if(customName == null) {
+			return "main";
+		}
+		
+		System.out.println(customName);
+		
+		vo.setPut_name(customName);
+
+		System.out.println("controller customName out : " + vo.getPut_name());
+		
+		dao.deleteCustom(vo);
 		
 		
 		return customName;

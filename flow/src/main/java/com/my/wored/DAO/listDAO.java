@@ -1,5 +1,7 @@
 package com.my.wored.DAO;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,8 +37,17 @@ public class listDAO {
 	public void insertCustom(listVO vo) {
 		try {
 			listMapper mapper = sqlsession.getMapper(listMapper.class);
-			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
 			mapper.insertCustom(vo);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteCustom(listVO vo) {
+		try {
+			listMapper mapper = sqlsession.getMapper(listMapper.class);
+			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
+			mapper.deleteCustom(vo);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
