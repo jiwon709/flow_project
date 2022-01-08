@@ -17,6 +17,10 @@
 	$(function(){
 		
 		var chk_arr = [];
+		var name_arr = [];
+		
+		var deleteName;
+		var whatName;
 		
 		$(".checkbox_fix").change(function(){
 				//체크박스 선택 시, 배열에 추가한다.
@@ -26,23 +30,57 @@
 					
 					console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
 					console.log("배열 수 : " + chk_arr.length);
-				}
-				
-				//혹시라도 배열의 길이가 체크한 값보다 더 많아지면 강제 pop
-				if($('input:checkbox[name="checkbox_fix"]:checked').length < chk_arr.length) {
-					chk_arr.pop($(this).val());
-					console.log("pop : " + chk_arr);
-				}
-				
-				//체크한 값을 하나씩 확인하기 위해 초기화
-				else{
+					
+					//함수 실행
 					change();
+					
+		
+					//체크한 값을 하나씩 넣기 위해 초기화
+					chk_arr = [];
+					
+					//선택했던 값들 넣어주는 배열 생성
+					name_arr.push($(this).val());
+					
+					//선택 되어있는 값들 넣어주는 배열 생성
+					var len = $("input[name='checkbox_fix']:checked").length;
+					var checkArr = [];
+					if(len >= 1){
+						$("input[name='checkbox_fix']:checked").each(function(e){
+							var value = $(this).val();
+							checkArr.push(value);
+						});
+					}
+					
+					
+					//체크박스 해제 시 두 배열 비교 후 데이터 삭제
+					if(checkArr.length < name_arr.length){
+						whatName = name_arr[name_arr.length - 1];
+						
+						while(true){
+							var search = name_arr.indexOf(whatName);
+							console.log("length name : " + whatName);
+							console.log("last_name : " + search );
+							if(search != -1){
+								name_arr.splice(search, 1);
+							}else{
+								break;
+							}
+						}
+						changeDelete();
+					}					
+					console.log("checkArr : " + checkArr);
+					console.log("name_arr : " + name_arr);
+					
+				} else{
+					console.log("uncheck : ");
+					whatName = name_arr[name_arr.length - 1];
+					changeDelete();
 					chk_arr = [];
 				}
 			});
 		
 		
-		//post method start
+		//checkbox_insert method
 		function change() {
 			$.ajax({
 				url : "<c:url value='/list/checkboxList'/>"
@@ -58,7 +96,25 @@
 					console.log(error);
 				}
 			});
-		}	
+		}
+		
+		//checkbox_delete method
+		function changeDelete() {
+			$.ajax({
+				url : "<c:url value='/list/checkboxListDelete'/>"
+				,type : "post"
+				,dataType : "text"
+				,data : { 
+					deleteName : whatName
+				}
+				,success : function(data) {
+					console.log("delete : " + data);
+				}
+				,error : function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
 	
 	});
 	
@@ -87,26 +143,8 @@
 		
 		
 		
-		
 		//post method start
 		var cnt = 0;
-		
-		function add(){	
-			$.ajax({
-				url : "<c:url value='/list/customList'/>"
-				,type : "post"
-				,contentType : "application/json; charset=utf-8"
-				,data : JSON.stringify({
-					"put_name" : $("#custom_text").val()
-				})
-				,success : function() {
-					console.log("성공");
-				}
-				,error : function(request, status, error) {
-					console.log(error);
-				}
-			});
-		}
 		 
 		function add(){	
 			$.ajax({
@@ -144,7 +182,7 @@
 						alert("200개까지 등록 가능합니다.");
 					}
 					
-					$("#customNameBox").on("click",customDelete());
+					//$("#customNameBox").on("click",customDelete());
 					
 				}
 				,error : function(request, status, error) {

@@ -38,20 +38,59 @@ public class listController {
 		if(chbox == null) {
 			return "main";
 		}
-		
-		String fix_name = chbox.get(0).toString();
-		
-		System.out.println(fix_name);
-				
-		vo.setFix_name(fix_name);
-		vo.setPut_name(fix_name);
+			String fix_name = chbox.get(0).toString();
+			
+			System.out.println(fix_name);
+			
+//			
+//			String nameArray[] = new String[7];
+//			for(int i = 0; i <= nameArray.length; i++) {
+//				nameArray[i] = fix_name;
+//				
+//				if
+//			}
+			
+			vo.setFix_name(fix_name);
+			vo.setPut_name(fix_name);
 
-		System.out.println("controller : " + vo.getFix_name() + vo.getPut_name());
+			System.out.println("controller : " + vo.getFix_name() + vo.getPut_name());
+			
+			dao.insertList(vo);
+			
+			
+			return fix_name;
+	}
+	
+	@RequestMapping(value = "/list/checkboxListDelete", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkboxListDelete( 
+			@RequestParam(value = "deleteName", required = false) String deleteName, listVO vo) {
 		
-		dao.insertList(vo);
-		
-		
-		return fix_name;
+		//아무것도 선택되지 않았을 때 main화면으로 돌아간다.
+		if(deleteName == null) {
+			return "main";
+		}
+//			String fix_name = chbox.get(0).toString();
+			
+			System.out.println(deleteName);
+			
+//			
+//			String nameArray[] = new String[7];
+//			for(int i = 0; i <= nameArray.length; i++) {
+//				nameArray[i] = fix_name;
+//				
+//				if
+//			}
+			
+			vo.setFix_name(deleteName);
+			vo.setPut_name(deleteName);
+
+			System.out.println("controller : " + vo.getFix_name() + vo.getPut_name());
+			
+			dao.deleteList(vo);
+			
+			
+			return deleteName;
 	}
 	
 	@RequestMapping(value = "/list/customList", method = RequestMethod.POST)
