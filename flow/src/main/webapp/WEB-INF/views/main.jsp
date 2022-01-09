@@ -11,8 +11,8 @@
 
 <script src="<c:url value="/resources/jquery-3.5.1.min.js"/>"></script>
 <script>
-	
-	
+
+
 	//checkBox
 	$(function(){
 		
@@ -26,10 +26,11 @@
 				//체크박스 선택 시, 배열에 추가한다.
 				if($(".checkbox_fix").is(":checked")){
 					chk_arr.push($(this).val());
-					console.log("push : " + chk_arr);
 					
-					console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
-					console.log("배열 수 : " + chk_arr.length);
+					//check용
+					/* console.log("check 수 : " + $('input:checkbox[name="checkbox_fix"]:checked').length);
+					console.log("배열 수 : " + chk_arr.length); */
+					
 					
 					//함수 실행
 					change();
@@ -41,7 +42,7 @@
 					//선택했던 값들 넣어주는 배열 생성
 					name_arr.push($(this).val());
 					
-					//선택 되어있는 값들 넣어주는 배열 생성
+					//현재 화면에서 선택 되어있는 값들 넣어주는 배열 생성
 					var len = $("input[name='checkbox_fix']:checked").length;
 					var checkArr = [];
 					if(len >= 1){
@@ -50,16 +51,14 @@
 							checkArr.push(value);
 						});
 					}
-					
-					
+
 					//체크박스 해제 시 두 배열 비교 후 데이터 삭제
 					if(checkArr.length < name_arr.length){
 						whatName = name_arr[name_arr.length - 1];
 						
 						while(true){
 							var search = name_arr.indexOf(whatName);
-							console.log("length name : " + whatName);
-							console.log("last_name : " + search );
+							
 							if(search != -1){
 								name_arr.splice(search, 1);
 							}else{
@@ -67,12 +66,15 @@
 							}
 						}
 						changeDelete();
-					}					
-					console.log("checkArr : " + checkArr);
-					console.log("name_arr : " + name_arr);
+					}
+					
+					//데이터 삭제되었는지 확인용
+					console.log("check 된 항목 : " + checkArr);
+					console.log("check 했던 항목들 : " + name_arr);
 					
 				} else{
-					console.log("uncheck : ");
+					console.log("uncheck");
+					
 					whatName = name_arr[name_arr.length - 1];
 					changeDelete();
 					chk_arr = [];
@@ -90,7 +92,7 @@
 					chbox : chk_arr
 				}
 				,success : function(data) {
-					console.log(data);
+					console.log("insert : " + data);
 				}
 				,error : function(request, status, error) {
 					console.log(error);
@@ -128,6 +130,7 @@
 			var customNameDoc = document.getElementById("custom_text");
 			var customNameCheck = document.getElementById("customNameBox");
 			
+			//공백만 입력하거나 아무 값도 넣지 않았을 때
 			if(customNameDoc.value.trim().length==0 || customNameDoc.value.trim()==""){
 				alert("확장자를 입력해 주세요.");
 				return false;
@@ -143,9 +146,9 @@
 		
 		
 		
-		//post method start
+		//custom_box insert method start
 		var cnt = 0;
-		 
+		
 		function add(){	
 			$.ajax({
 				url : "<c:url value='/list/customList'/>"
@@ -157,19 +160,21 @@
 				,success : function(result) {
 					console.log(result);
 					
-					//customBox input
-					var tag = "<button type='button' id='customNameBox' value='";
-					tag += $("#custom_text").val()
-					tag += "'>"
-					tag += $("#custom_text").val()
-					tag += " x"
-					tag += "</button>";
-					 
+					
+					var what_deleteName = result;
+					console.log("what_deleteName : " + what_deleteName);
+					
+					
+					var tag = "<input type='button' class='customNameBox'";
+					tag += "name='" + $("#custom_text").val() + "'" 
+					tag += "value='" + $("#custom_text").val() + " x'/>";
+					
 					$("#custom_box").append(tag);
 					
 					
 					//customBox customName_num
-					$("#put_num").html("");	
+					$("#put_num").html("");
+					
 					cnt++;
 		
 					var num_tag = cnt;
@@ -180,20 +185,73 @@
 					//customBox 200개 제한
 					if(cnt == 200){
 						alert("200개까지 등록 가능합니다.");
+						return false;
 					}
 					
-					//$("#customNameBox").on("click",customDelete());
+					//custom_box delete method start
+					$(".customNameBox").on("click",function(){
+						
+						$.ajax({
+							url : "<c:url value='/list/customDelete'/>"
+							,type : "post"
+							,data : {
+								customName : result
+							}
+							,success : function(){ 
+								console.log("custom delete success");
+								
+								$("#put_num").html("");
+								
+								var minus_cnt = cnt;
+								minus_cnt--;
+								
+								var num_tag = minus_cnt;
+								num_tag += "/200";
+								$("#put_num").append(num_tag);
+								
+								$("input[name=" + result + "]").remove();
+							}
+							,error : function(request, status, error){
+								console.log("custom error : " + error);
+							}
+						});
+					});
 					
 				}
 				,error : function(request, status, error) {
 					console.log(error);
 				}
 			});
-		} 
-		
-		
+			
+		}
 		
 	});
+	
+	
+	
+	//readList for database_table
+	/* $(function(){
+		$.ajax({
+			url : "<c:url value='/list/readList'/>"
+			,type : "post"
+			,success : function(data){
+				console.log(data);
+				console.log("readList success");
+				
+				$.each(data, function(index, vo){
+					var tag = "<tr>";
+					tag += "<td>" + vo.fix_name + "</td>";
+					tag += "<td>" + vo.put_name + "</td>";
+					tag += "</tr>";
+					
+					$("#here").append(tag);
+				})
+			}
+			,error : function(request, status, error){
+				console.log(error);
+			}
+		});
+	}); */
  
 
 </script>
@@ -236,12 +294,13 @@
                <td colspan="2">
                    <div style="border:1px solid; width:200px; height:100px;" id="custom_box">
                    		<p id="put_num">0/200</p>
-                   		<table id="here"></table>
                    </div>
                </td>
            </tr>
        </table>
    </div>
+   
+   <table id="here"></table>
    
    <%-- <script src="<c:url value="/resources/jquery-3.5.1.min.js"/>"></script>
    <script src="<c:url value="/resources/js/app.js"/>"></script> --%>

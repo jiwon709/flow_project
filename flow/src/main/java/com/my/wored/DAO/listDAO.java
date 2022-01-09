@@ -1,6 +1,7 @@
 package com.my.wored.DAO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ public class listDAO {
 	public void insertList(listVO vo) {
 		try {
 			listMapper mapper = sqlsession.getMapper(listMapper.class);
-			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
 			mapper.insert(vo);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -27,7 +27,6 @@ public class listDAO {
 	public void deleteList(listVO vo) {
 		try {
 			listMapper mapper = sqlsession.getMapper(listMapper.class);
-			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
 			mapper.delete(vo);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -46,11 +45,21 @@ public class listDAO {
 	public void deleteCustom(listVO vo) {
 		try {
 			listMapper mapper = sqlsession.getMapper(listMapper.class);
-			System.out.println("listDAO : " + vo.getFix_name() + vo.getPut_name());
 			mapper.deleteCustom(vo);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<listVO> read() {
+		List<listVO> list = new ArrayList<listVO>();
+		try {
+			listMapper mapper = sqlsession.getMapper(listMapper.class);
+			list = mapper.read();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }

@@ -24,4 +24,8 @@
 			where put_name = #{put_name}
 	</delete>
 	
+	<select id="read" resultType="listvo">
+		select * from flow_test
+	</select>
+	
 </mapper>
